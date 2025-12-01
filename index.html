@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Gestión Contable Familiar</title>
+</head>
+<body>
+
+    <form action="#" id="formulario" class="formulario">
+        <!-- Input tipo text "Concepto" -->
+         <input type="text" name="concepto" placeholder="Concepto">
+        
+         <!-- Input tipo number "Importe" -->
+         <input type="number" name="importe" placeholder="Importe">
+
+        <!-- Input select "Tipo" -->
+        <select name="tipo" id="tipo">
+            <option value="ingreso">Ingreso</option>
+            <option value="gasto">Gasto</option>
+        </select>
+
+        <!-- Button que me genera objetos dentro de [] -->
+        <button id="btnAgregar" type="button">Agregar</button>
+    </form>
+
+    <table id="tabla" class="tabla">
+        <thead>
+            <!-- <tr>
+                <td>${Concepto}</td>
+                <td>${Tipo}</td>
+                <td>${Importe}</td>
+            </tr> -->
+        </thead>
+
+        <!-- Contenido, hacerlo desde JS -->
+        <tbody>
+        </tbody>
+    </table>
+    
+    <script src="js/main.js"></script>
+</body>
+</html>
