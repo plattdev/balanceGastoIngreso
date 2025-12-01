@@ -6,51 +6,96 @@
 const registros = []
 
 // 3️⃣ SELECCIÓN DE ELEMENTOS DEL DOM
+const form = document.getElementById('formulario')
 const concepto = document.getElementById('concepto')
 const importe = document.getElementById('importe')
 const tipo = document.getElementById('tipo')
-const btnAgregar = document.getElementById('btnAgregar')
-const tabla = document.getElementById('tabla')
 
+// **********************************
+//Evento sumbit del formulario. Tambien se puede hacer con  btnAgregar.addEventListener('click', function(event) {})
 
+form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Evita que el formulario se envíe y recargue la página. IMPORTANTE:LUEGO CUANDO HAGAMOS LA BD TENDREMOS QUE QUITAR ESTO
 
-// 5️⃣ FUNCIONES PRINCIPALES
-//Cuando haga click en el botón "Agregar" se añade un array a la tabla con los datos ingresados
-function agregarRegistro() {
+    //Obtener los valores del formulario
+    const conceptoValue = concepto.value
+    const importeValue = parseFloat(importe.value)
+    const tipoValue = tipo.value
 
-    // Crear objeto registro y guardarlo en el array
+    //Toda la información que obtenemos de .value tiene que ser un objeto y cada objeto tiene que estar dentro del array registros
     const registro = {
-        concepto: concepto.value,
-        importe: importe.value,
-        tipo: tipo.value
+        concepto: conceptoValue,
+        importe: importeValue,
+        tipo: tipoValue
     }
+
+    //Agregar el objeto registro al array registros
     registros.push(registro)
 
-    console.log(registros)
+    
+    //Limpiar los campos del formulario después de enviar
+    form.reset()
+    
+    console.log(registros) //Muestra el array de registros en la consola para verificar
 
-    // Crear y agregar la fila a la tabla
-    const nuevoRegistro = document.createElement('tr');
-    nuevoRegistro.innerHTML = `
-        <td>${registro.concepto}</td>
-        <td>${registro.importe}</td>
-        <td>${registro.tipo}</td>
-    `;
-    tabla.appendChild(nuevoRegistro);
+    //LLAMADAS A FUNCIONES DE APOYO
+    //Llamar a una función que será para introducir un nuevo registro en la tabla de HTML
+    agregarRegistroATabla(registro)
+    
+    //Llamar a la función para calcular y actualizar el balance
+    calcularBalance()
+})
 
-    console.log('Registro agregado:', registro);
+// 4️⃣ FUNCIONES
+//*************************** */
+//CONSTRUCTOR DE LA TABLA EN EL HTML
+// Función para agregar un registro a la tabla en el HTML
+function agregarRegistroATabla(registro) {
+    //Seleccionar la tabla del DOM
+    const tabla = document.getElementById('introMovimientos')
+    
+    //Crear una nueva fila y sus celdas-  con funcion de JS
+    const nuevaFila = tabla.insertRow()
 
-    // Limpiar los campos después de agregar
-    concepto.value = '';
-    importe.value = '';
-    tipo.value = 'ingreso';
+    //Crear celdas para concepto, importe y tipo
+    const celdaConcepto = nuevaFila.insertCell(0)
+    const celdaImporte = nuevaFila.insertCell(1)
+    const celdaTipo = nuevaFila.insertCell(2)
+
+    //Asignar los valores del objeto creado (registro) a las celdas
+    celdaConcepto.textContent = registro.concepto
+    celdaImporte.textContent = registro.importe
+    celdaTipo.textContent = registro.tipo
 }
 
+//Función que suma todos los gastos, ingresos y calcula el balance (ingresos-gastos). No queremos el objeto, queremos el array registros que tiene todos los objetos
+//***************** */
+//HACE TODAS LAS OPERACIONES DE SUMA Y RESTA
+function calcularBalance() {
+    let totalIngresos = 0
+    let totalGastos = 0
+    
+    //Recorrer el array registros y sumar los importes según el tipo
+    registros.forEach(registro => {
+        if (registro.tipo === 'ingreso') {
+            totalIngresos += registro.importe
+        } else if (registro.tipo === 'gasto') {
+            totalGastos += registro.importe
+        }
+    });
 
-// 6️⃣ EVENT LISTENERS (Eventos)
-//Cuando haces click en el botón "Agregar", se ejecuta la función agregarRegistro
-btnAgregar.addEventListener('click', agregarRegistro)
+    //Llevar el total de ingresos, gastos y balance al DOM
+    const balanceIngresos = document.getElementById('balanceIngresos')
+    const balanceGastos = document.getElementById('balanceGastos')
+    const balanceTotal = document.getElementById('balanceTotal')
 
-
+    //Actualizar los valores en el DOM
+    balanceIngresos.textContent = totalIngresos
+    balanceGastos.textContent = totalGastos
+    
+    const balance = totalIngresos - totalGastos
+    balanceTotal.textContent = balance
+}
 
 
 
