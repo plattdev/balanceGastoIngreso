@@ -47,6 +47,12 @@ function agregarRegistro() {
 
 
 // 6️⃣ EVENT LISTENERS (Eventos)
+//Cuando haces click en el botón "Agregar", se ejecuta la función agregarRegistro
+btnAgregar.addEventListener('click', agregarRegistro)
+
+
+
+
 
 
 
