@@ -2,8 +2,63 @@
 //Tipo 1 de importacion - se importa el array registros desde data.js y lo vamos a usar en este archivo
 import { registros } from './data.js' //Importamos el array registros desde data.js
 
-// 2️⃣ VARIABLES GLOBALES Y CONSTANTES
+//********BASE DE DATOS CON SUPABASE ****************/
+// *************************
+// Configuración de Supabase
+// *************************
 
+//IMPORTAR supabase desde CDN (para proyectos pequeños sin bundler, está bien, pero para proyectos grandes es mejor instalarlo con npm)
+//COnfiguracion de supabase - accdede a la puerta
+const supabaseUrl = 'https://vchozgyszyymlnmrlbtb.supabase.co' // Reemplaza con tu URL de Supabase
+//IMPORTANTE: Reemplaza 'TU_ANON_KEY' con tu clave pública de Supabase - la llave para abrir la puerta
+const supabaseKey = 'sb_publishable_yRDesnPUxFaf0vlYK23uIQ_fm-uL6ek' 
+
+//Crear cliente de Supabase
+let supabase = null
+
+// Función para inicializar Supabase
+function initSupabase() {
+    if (window.supabase) {
+        supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+        console.log('Supabase inicializado correctamente');
+    } else {
+        console.error('Error: La librería de Supabase no se ha cargado');
+    }
+}
+
+// Función para guardar registro en Supabase
+// Utilidad de la función async/await para manejar la promesa, y 
+// una promesa es un valor que puede estar disponible ahora, en el futuro o nunca.
+async function guardarEnSupabase(registro) {
+    if (!supabase) {
+        console.error('Supabase no está inicializado');
+        return null;
+    }
+    
+    const { data, error } = await supabase
+        .from('prueba') // Nombre de la tabla en Supabase
+        .insert([registro])
+        .select();
+    
+    if (error) {
+        console.error('Error al guardar en Supabase:', error.message);
+        return null;
+    }
+    
+    console.log('Registro guardado en Supabase:', data);
+    return data;
+}
+
+// Inicializar cuando el DOM esté listo
+document.addEventListener('DOMContentLoaded', initSupabase);
+
+// **********************************
+// FIN de supabase
+// **********************************
+
+
+
+// 2️⃣ VARIABLES GLOBALES Y CONSTANTES
 
 // 3️⃣ SELECCIÓN DE ELEMENTOS DEL DOM
 const form = document.getElementById('formulario')
