@@ -12,7 +12,7 @@ const importe = document.getElementById('importe')
 const tipo = document.getElementById('tipo')
 
 // **********************************
-//Evento sumbit del formulario. Tambien se puede hacer con  btnAgregar.addEventListener('click', function(event) {})
+//Evento sumbit del formulario. Tambien se puede hacer con  btnAgregar.addEventListener('click', () {})
 
 form.addEventListener('submit', function(event) {
     event.preventDefault(); // Evita que el formulario se envíe y recargue la página. IMPORTANTE:LUEGO CUANDO HAGAMOS LA BD TENDREMOS QUE QUITAR ESTO
@@ -29,7 +29,7 @@ form.addEventListener('submit', function(event) {
         tipo: tipoValue
     }
 
-    //Agregar el objeto registro al array registros
+    //Agregar el objeto registro al array registros. IMPORTANTE: está declarado en data.js
     registros.push(registro)
 
     
@@ -52,7 +52,7 @@ form.addEventListener('submit', function(event) {
 // Función para agregar un registro a la tabla en el HTML
 function agregarRegistroATabla(registro) {
     //Seleccionar la tabla del DOM
-    const tabla = document.getElementById('introMovimientos')
+    const tabla = document.getElementById('tablaIntroRegistros')
     
     //Crear una nueva fila y sus celdas-  con funcion de JS
     const nuevaFila = tabla.insertRow()
@@ -64,7 +64,7 @@ function agregarRegistroATabla(registro) {
 
     //Asignar los valores del objeto creado (registro) a las celdas
     celdaConcepto.textContent = registro.concepto
-    celdaImporte.textContent = registro.importe
+    celdaImporte.textContent = `${registro.importe} €`
     celdaTipo.textContent = registro.tipo
 }
 
@@ -77,6 +77,7 @@ function calcularBalance() {
     
     //Recorrer el array registros y sumar los importes según el tipo
     registros.forEach(registro => {
+        //recuerda que registro.tipo viene de las propiedades del objeto registro
         if (registro.tipo === 'ingreso') {
             totalIngresos += registro.importe
         } else if (registro.tipo === 'gasto') {
@@ -90,11 +91,11 @@ function calcularBalance() {
     const balanceTotal = document.getElementById('balanceTotal')
 
     //Actualizar los valores en el DOM
-    balanceIngresos.textContent = totalIngresos
-    balanceGastos.textContent = totalGastos
+    balanceIngresos.textContent = `${totalIngresos} €`
+    balanceGastos.textContent = `${totalGastos} €`
     
     const balance = totalIngresos - totalGastos
-    balanceTotal.textContent = balance
+    balanceTotal.textContent = `${balance} €`
 }
 
 
